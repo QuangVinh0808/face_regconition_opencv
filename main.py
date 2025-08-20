@@ -2,7 +2,7 @@ import cv2
 import face_recognition
 import os
 import numpy as np
-
+import psutil
 
 #load anh tu kho nhan dang
 path = 'picSetup'
@@ -60,7 +60,13 @@ while True:
         cv2.rectangle(framS, (x1, y1), (x2, y2), (0, 234, 45), 2)
         cv2.putText(framS, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
-        
+        # Đo CPU và RAM (MB)
+        process = psutil.Process(os.getpid())
+        ram_usage_mb = process.memory_info().rss / (1024 * 1024)  # RAM đang dùng (MB)
+        cpu_usage = psutil.cpu_percent(interval=1)
+        print(f"CPU Usage: {cpu_usage}%, RAM Usage: {ram_usage_mb:.2f} MB")
+
+
     cv2.imshow('Video Frame', framS)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
